@@ -9,19 +9,15 @@ on:
 jobs:
   UpdatePresences:
     runs-on: ubuntu-18.04
-    if: github.repository_owner == 'PreMiD'
+    if: github.repository_owner == 'TheGamerzs'
     steps:
       - name: Checkout Project
         uses: actions/checkout@v2
-      - name: Use Node.js 12
-        uses: actions/setup-node@v2.2.0
+      - name: Use Node.js 16
+        uses: actions/setup-node@v2.4.0
         with:
-          node-version: 12
-      - name: Restore CI Cache
-        uses: actions/cache@v2.1.6
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-12-${{ hashFiles('**/yarn.lock') }}
+          node-version: 16
+          cache: "yarn"
       - name: Install Deps
         run: yarn
       - name: Compile Script
