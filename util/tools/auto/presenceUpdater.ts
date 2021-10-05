@@ -18,8 +18,8 @@ import {
   getPreEmitDiagnostics
 } from "typescript";
 
-const url = process.env.MONGO_URL,
-  dbname = "PreMiD";
+const url = `mongodb://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_IP}:27019`,
+  dbname = "PreMiD-DEV";
 let extendedRun = false,
   exitCode = 0,
   appCode = 0;
