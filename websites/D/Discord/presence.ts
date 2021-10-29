@@ -1,144 +1,79 @@
-interface LangStrings {
-  browse: string;
-  writing: string;
-  reading: string;
-  channelReading: string;
-  channelTyping: string;
-  dmReading: string;
-  dmTyping: string;
-  dmGroupReading: string;
-  dmGroupTyping: string;
-  friends: string;
-  nitro: string;
-  voiceConnectedWith: string;
-  voiceConnectedTo: string;
-  inCall: string;
-  calling: string;
-  settings: string;
-  serverSettings: string;
-  invite: string;
-  inviteServer: string;
-  buttonInvite: string;
-  browseThrough: string;
-  download: string;
-  why: string;
-  safety: string;
-  jobs: string;
-  company: string;
-  branding: string;
-  inspiration: string;
-  college: string;
-  newsroom: string;
-  partner: string;
-  verification: string;
-  streamkit: string;
-  opensource: string;
-  security: string;
-  moderation: string;
-  rpc: string;
-  policies: string;
-  portal: string;
-  appsBrowse: string;
-  appsEdit: string;
-  teamsBrowse: string;
-  teamsEdit: string;
-  serversBrowse: string;
-  serversEdit: string;
-  docs: string;
-  status: string;
-  viewing: string;
-  uptime: string;
-  incident: string;
-  incidentView: string;
-  helpCenter: string;
-  viewCategory: string;
-  searchFor: string;
-  searching: string;
-  readingArticle: string;
-  blog: string;
-  merch: string;
-  product: string;
-  collection: string;
-  viewPage: string;
-  shopCart: string;
-}
-
 const presence = new Presence({
-    clientId: "616940877042155531"
-  }),
-  getStrings = async (): Promise<LangStrings> => {
-    return presence.getStrings(
-      {
-        browse: "general.browsing",
-        writing: "general.writing",
-        reading: "general.reading",
-        channelReading: "discord.channelReading",
-        channelTyping: "discord.channelTyping",
-        dmReading: "discord.dmReading",
-        dmTyping: "discord.dmTyping",
-        dmGroupReading: "discord.dmGroupReading",
-        dmGroupTyping: "discord.dmGroupTyping",
-        friends: "discord.friends",
-        nitro: "discord.nitro",
-        voiceConnectedWith: "discord.voiceConnectedWith",
-        voiceConnectedTo: "discord.voiceConnectedTo",
-        inCall: "general.inCall",
-        calling: "general.calling",
-        settings: "discord.settings",
-        serverSettings: "discord.serverSettings",
-        invite: "discord.invite",
-        inviteServer: "discord.inviteServer",
-        buttonInvite: "discord.buttonInvite",
-        browseThrough: "discord.browseThrough",
-        download: "discord.download",
-        why: "discord.why",
-        safety: "discord.safety",
-        jobs: "discord.jobs",
-        company: "discord.company",
-        branding: "discord.branding",
-        inspiration: "discord.inspiration",
-        college: "discord.college",
-        newsroom: "discord.newsroom",
-        partner: "discord.partner",
-        verification: "discord.verification",
-        streamkit: "discord.streamkit",
-        opensource: "discord.opensource",
-        security: "discord.security",
-        moderation: "discord.moderation",
-        rpc: "discord.rpc",
-        policies: "discord.policies",
-        portal: "discord.devs.portal",
-        appsBrowse: "discord.devs.appsBrowse",
-        appsEdit: "discord.devs.appsEdit",
-        teamsBrowse: "discord.devs.teamsBrowse",
-        teamsEdit: "discord.devs.teamsEdit",
-        serversBrowse: "discord.devs.serversBrowse",
-        serversEdit: "discord.devs.serversEdit",
-        docs: "discord.devs.docs",
-        status: "discord.status",
-        viewing: "general.viewing",
-        uptime: "general.uptimeHistory",
-        incident: "general.incidentHistory",
-        incidentView: "general.incidentView",
-        helpCenter: "discord.support",
-        viewCategory: "general.viewCategory",
-        searchFor: "general.searchFor",
-        searching: "general.search",
-        readingArticle: "general.readingArticle",
-        blog: "discord.blog",
-        merch: "discord.merch",
-        product: "general.viewProduct",
-        collection: "discord.merch.collection",
-        viewPage: "general.viewPage",
-        shopCart: "general.shopCart"
-      },
-      await presence.getSetting("lang").catch(() => "en")
-    );
-  };
+  clientId: "616940877042155531"
+});
+async function getStrings() {
+  return presence.getStrings(
+    {
+      browse: "general.browsing",
+      writing: "general.writing",
+      reading: "general.reading",
+      channelReading: "discord.channelReading",
+      channelTyping: "discord.channelTyping",
+      dmReading: "discord.dmReading",
+      dmTyping: "discord.dmTyping",
+      dmGroupReading: "discord.dmGroupReading",
+      dmGroupTyping: "discord.dmGroupTyping",
+      friends: "discord.friends",
+      nitro: "discord.nitro",
+      voiceConnectedWith: "discord.voiceConnectedWith",
+      voiceConnectedTo: "discord.voiceConnectedTo",
+      inCall: "general.inCall",
+      calling: "general.calling",
+      settings: "discord.settings",
+      serverSettings: "discord.serverSettings",
+      invite: "discord.invite",
+      inviteServer: "discord.inviteServer",
+      buttonInvite: "discord.buttonInvite",
+      browseThrough: "discord.browseThrough",
+      download: "discord.download",
+      why: "discord.why",
+      safety: "discord.safety",
+      jobs: "discord.jobs",
+      company: "discord.company",
+      branding: "discord.branding",
+      inspiration: "discord.inspiration",
+      college: "discord.college",
+      newsroom: "discord.newsroom",
+      partner: "discord.partner",
+      verification: "discord.verification",
+      streamkit: "discord.streamkit",
+      opensource: "discord.opensource",
+      security: "discord.security",
+      moderation: "discord.moderation",
+      rpc: "discord.rpc",
+      policies: "discord.policies",
+      portal: "discord.devs.portal",
+      appsBrowse: "discord.devs.appsBrowse",
+      appsEdit: "discord.devs.appsEdit",
+      teamsBrowse: "discord.devs.teamsBrowse",
+      teamsEdit: "discord.devs.teamsEdit",
+      serversBrowse: "discord.devs.serversBrowse",
+      serversEdit: "discord.devs.serversEdit",
+      docs: "discord.devs.docs",
+      status: "discord.status",
+      viewing: "general.viewing",
+      uptime: "general.uptimeHistory",
+      incident: "general.incidentHistory",
+      incidentView: "general.incidentView",
+      helpCenter: "discord.support",
+      viewCategory: "general.viewCategory",
+      searchFor: "general.searchFor",
+      searching: "general.search",
+      readingArticle: "general.readingArticle",
+      blog: "discord.blog",
+      merch: "discord.merch",
+      product: "general.viewProduct",
+      collection: "discord.merch.collection",
+      viewPage: "general.viewPage",
+      shopCart: "general.shopCart"
+    },
+    await presence.getSetting("lang").catch(() => "en")
+  );
+}
 
 let browsingStamp = Math.floor(Date.now() / 1000),
   prevUrl = document.location.href,
-  strings: Promise<LangStrings> = getStrings(),
+  strings = getStrings(),
   oldLang: string = null;
 
 presence.on("UpdateData", async () => {

@@ -1,19 +1,14 @@
 const OMGUbuntu = new Presence({
-    clientId: "821058353094590474"
+    clientId: "901490472046968843"
   }),
-  pages: { [k: string]: string } = {
+  pages: Record<string, string> = {
     "/": "Home",
     "/about-us": "About",
     "/commenting-conduct": "Code of Conduct",
     "/privacy-policy": "Privacy Policy",
     "/tip": "Contact"
   },
-  startTimestamp = Math.round(Date.now() / 1000),
-  articleHeader =
-    document.querySelector("div.primary .post h1.post-title")?.textContent ||
-    document
-      .querySelector(".post__hero-header .post-title")
-      ?.textContent.trim();
+  startTimestamp = Math.round(Date.now() / 1000);
 
 OMGUbuntu.on("UpdateData", async () => {
   const page = location.pathname,
@@ -22,8 +17,12 @@ OMGUbuntu.on("UpdateData", async () => {
       startTimestamp
     },
     header = document
-      .querySelector(".content-container .loop h2")
-      ?.lastChild.textContent.trim();
+      .querySelector("div.u--box.content-container > div.loop > header > h2")
+      ?.lastChild.textContent.trim()
+      .replace(/“|”/g, ""),
+    articleHeader = document.querySelector(
+      "div.post__hero-header-container.u--box > header > h1"
+    )?.textContent;
 
   if (page.includes("/tag/")) {
     presenceData.details = "Looking at a tag:";
@@ -42,11 +41,13 @@ OMGUbuntu.on("UpdateData", async () => {
       "Unknown Search";
 
     presenceData.details = "Searching for:";
-    presenceData.smallImageKey = "searching";
+    presenceData.smallImageKey = "search";
+    presenceData.smallImageText = "Searching";
     presenceData.state = searching;
   } else if (page.includes("/") && articleHeader) {
     presenceData.details = "Reading an article:";
     presenceData.smallImageKey = "reading";
+    presenceData.smallImageText = "Reading";
     presenceData.state = articleHeader;
     presenceData.buttons = [{ label: "Read Article", url: location.href }];
   } else if (pages[page])
