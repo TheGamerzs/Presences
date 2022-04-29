@@ -1,89 +1,76 @@
 const presence = new Presence({
-    clientId: "877353878427959317"
-  }),
-  strings = presence.getStrings({
-    play: "presence.playback.playing",
-    pause: "presence.playback.paused",
-    live: "presence.activity.live",
-    search: "presence.activity.searching"
-  });
+		clientId: "877353878427959317"
+	}),
+	strings = presence.getStrings({
+		play: "presence.playback.playing",
+		pause: "presence.playback.paused",
+		live: "presence.activity.live",
+		search: "presence.activity.searching"
+	});
 
 let elapsed: number, oldUrl: string;
 
 presence.on("UpdateData", async () => {
-  let details: string,
-    state: string,
-    smallImageKey: string,
-    smallImageText: string,
-    startTimestamp: number,
-    endTimestamp: number;
+	const video: HTMLVideoElement = document.querySelector("video"),
+		{ href } = window.location,
+		presenceData: PresenceData = {
+			largeImageKey: "amc"
+		};
 
-  const video: HTMLVideoElement = document.querySelector("video"),
-    { href } = window.location;
+	if (href !== oldUrl) {
+		oldUrl = href;
+		elapsed = Math.floor(Date.now() / 1000);
+	}
 
-  if (href !== oldUrl) {
-    oldUrl = href;
-    elapsed = Math.floor(Date.now() / 1000);
-  }
+	// Default details
+	presenceData.details = "Browsing catalogue...";
 
-  // Default details
-  details = "Browsing catalogue...";
+	presenceData.startTimestamp = elapsed;
 
-  startTimestamp = elapsed;
+	if (video) {
+		const slot2 = document.querySelector(".slot2"),
+			slot3 = document.querySelector(".slot3"),
+			isSeries = slot2 && slot3;
 
-  if (video) {
-    const slot1 = document.querySelector(".slot1"),
-      slot2 = document.querySelector(".slot2"),
-      slot3 = document.querySelector(".slot3"),
-      isSeries = slot2 && slot3;
+		presenceData.details = document.querySelector(".slot1").textContent;
 
-    details = slot1.textContent;
+		if (isSeries) {
+			// A series has slot1 (the series name), slot2 (the episode)
+			// and slot3 (the episode name)
+			presenceData.details += `: ${slot2.textContent}`;
+			presenceData.state = slot3.textContent;
+		} else {
+			// A movie only has slot1 (the title)
+			presenceData.state = "Watching movie";
+		}
 
-    if (isSeries) {
-      // A series has slot1 (the series name), slot2 (the episode)
-      // and slot3 (the episode name)
-      details += `: ${slot2.textContent}`;
-      state = slot3.textContent;
-    } else {
-      // A movie only has slot1 (the title)
-      state = "Watching movie";
-    }
+		const [startTimestamp, endTimestamp] =
+				presence.getTimestampsfromMedia(video),
+			live = endTimestamp === Infinity;
 
-    const timestamps = presence.getTimestampsfromMedia(video),
-      live = timestamps[1] === Infinity;
+		presenceData.smallImageText = live
+			? (await strings).live
+			: video.paused
+			? (await strings).pause
+			: (await strings).play;
 
-    smallImageText = live
-      ? (await strings).live
-      : video.paused
-      ? (await strings).pause
-      : (await strings).play;
+		presenceData.smallImageKey = live
+			? "live"
+			: video.paused
+			? "pause"
+			: "play";
 
-    smallImageKey = live ? "live" : video.paused ? "pause" : "play";
+		presenceData.startTimestamp = live ? elapsed : startTimestamp;
+		presenceData.endTimestamp = endTimestamp;
 
-    if (live) startTimestamp = elapsed;
-    endTimestamp = live ? undefined : timestamps[1];
-    if (video.paused) {
-      startTimestamp = undefined;
-      endTimestamp = undefined;
-      if (!isSeries) state = "Paused";
-    }
-  }
+		if (live) delete presenceData.endTimestamp;
+		if (video.paused) {
+			delete presenceData.startTimestamp;
+			delete presenceData.endTimestamp;
+			if (!isSeries) presenceData.state = "Paused";
+		}
+	}
 
-  const data: PresenceData = {
-    largeImageKey: "amc",
-    details
-  };
-
-  if (state !== undefined) data.state = state;
-
-  if (smallImageKey !== undefined) data.smallImageKey = smallImageKey;
-
-  if (smallImageText !== undefined) data.smallImageText = smallImageText;
-
-  if (startTimestamp !== undefined) data.startTimestamp = startTimestamp;
-
-  if (endTimestamp !== undefined) data.endTimestamp = endTimestamp;
-
-  presence.setActivity(data);
-  presence.setTrayTitle(details);
+	if (!presenceData.details) presence.setActivity();
+	else presence.setActivity(presenceData);
 });
